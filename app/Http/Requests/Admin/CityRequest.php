@@ -1,12 +1,10 @@
 <?php
 
 namespace App\Http\Requests\Admin;
-
-
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCountryRequest extends FormRequest
+class CityRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,17 +23,12 @@ class UpdateCountryRequest extends FormRequest
      */
     public function rules()
     {
+    
         return [
-
-            'name' => [
-                'required'
-            ],          
-            'code' => [
-                'required'
-            ],           
-             "flag" => 'required',
-            "initials" => "required",
-            "nationality"  => "required"
+            'initials'           => 'required',
+            'name'             => 'required|alpha_dash|min:3|max:24',
+            'code'             => 'required|alpha_dash|min:3|max:6',
+            'country_id' =>  'required|exists:countries,id',
         ];
 
 

@@ -22,7 +22,7 @@ trait ApiResponse
 
         return [
             'message' => $message,
-            'status_code' => $statusCode,
+            'status' => $statusCode,
         ];
     }
 

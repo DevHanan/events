@@ -1,11 +1,10 @@
 <?php
 
 namespace App\Http\Requests\Admin;
-
-
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateCountryRequest extends FormRequest
+class CountryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +23,14 @@ class CreateCountryRequest extends FormRequest
      */
     public function rules()
     {
+        $updateMethod = $this->route()->getAction('uses') === 'App\Http\Controllers\Admin\CountryController@update';
+    
         return [
-
-            "name"    => 'required|unique:countries,name',
-            "code"    => 'required|unique:countries,code',
-            "flag" => 'required',
-            "initials" => "required",
-            "nationality"  => "required"
+            'flag'           => 'required',
+            'name'             => 'required|alpha_dash|min:3|max:24',
+            'code'             => 'required|alpha_dash|min:3|max:6',
+            "initials"          => "required",
+            "nationality"        => "required"
         ];
 
 

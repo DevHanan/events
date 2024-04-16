@@ -2,22 +2,22 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\CityRequest;
-use App\Http\Resources\CityResource;
-use App\Repositories\CityRepository;
+use App\Http\Requests\Admin\PersonRequest;
+use App\Http\Resources\PersonResource;
+use App\Repositories\PersonRepository;
 use Illuminate\Database\QueryException;
-use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
+use App\Traits\ApiResponse;
 
 
-class CityController extends Controller
+class PersonController extends Controller
 {
   
     protected $repository;
     use ApiResponse;
 
   
-    public function __construct(CityRepository $repository)
+    public function __construct(PersonRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -31,21 +31,21 @@ class CityController extends Controller
     public function index(Request $request)
     {
         $items = $this->repository->paginate($request);
-        return $this->okApiResponse(CityResource::collection($items),__('cities loaded'));
+        return $this->okApiResponse(PersonResource::collection($items),__('Countries loaded'));
 
     }
   
     /**
      * store post data to database table.
      *
-     * @param $request: App\Http\Requests\CityRepository
+     * @param $request: App\Http\Requests\PersonRequest
      * @return json response
      */
-    public function store(CityRequest $request)
+    public function store(PersonRequest $request)
     {
         try {
             $item = $this->repository->store($request);
-            return $this->createdApiResponse(new CityResource($item),__('cities loaded'));
+            return $this->createdApiResponse(new PersonResource($item),__('Countries loaded'));
         } catch (QueryException  $e) {
             return $this->errorApiResponse($e->getMessage(), $e->getStatus());
 
@@ -55,10 +55,10 @@ class CityController extends Controller
     /**
      * update post data to database table.
      *
-     * @param $request: App\Http\Requests\CityRepository
+     * @param $request: App\Http\Requests\UpdatePersonRequest
      * @return json response
      */
-    public function update($id, CityRequest $request)
+    public function update($id, PersonRequest $request)
     {
         try {
             $item = $this->repository->update($id, $request);
@@ -79,7 +79,7 @@ class CityController extends Controller
      {
          try {
             $item= $this->repository->show($id);
-            return $this->okApiResponse(new CityResource($item),__('cities loaded'));
+            return $this->okApiResponse(new PersonResource($item),__('Countries loaded'));
         } catch (QueryException $e) {
                 return $this->notFoundApiResponse('',$e->getMessage());
          }

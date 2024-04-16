@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Admin\CityController;
 use App\Http\Controllers\Api\Admin\CountryController;
+use App\Http\Controllers\Api\Admin\InterestController;
+use App\Http\Controllers\Api\Admin\PersonController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +24,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('countries',CountryController::class);
 Route::apiResource('cities',CityController::class);
+Route::apiResource('interests',InterestController::class);
+Route::apiResource('persons',PersonController::class);
+

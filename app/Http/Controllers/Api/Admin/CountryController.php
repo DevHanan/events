@@ -2,12 +2,11 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\CreateCountryRequest;
+use App\Http\Requests\Admin\CountryRequest;
 use App\Http\Requests\Admin\UpdateCountryRequest;
 use App\Http\Resources\CountryResource;
 use App\Repositories\CountryRepository;
-use Exception;
-use QueryException;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponse;
 
@@ -40,10 +39,10 @@ class CountryController extends Controller
     /**
      * store post data to database table.
      *
-     * @param $request: App\Http\Requests\CreateCountryRequest
+     * @param $request: App\Http\Requests\CountryRequest
      * @return json response
      */
-    public function store(CreateCountryRequest $request)
+    public function store(CountryRequest $request)
     {
         try {
             $item = $this->repository->store($request);
@@ -60,7 +59,7 @@ class CountryController extends Controller
      * @param $request: App\Http\Requests\UpdateCountryRequest
      * @return json response
      */
-    public function update($id, UpdateCountryRequest $request)
+    public function update($id, CountryRequest $request)
     {
         try {
             $item = $this->repository->update($id, $request);
