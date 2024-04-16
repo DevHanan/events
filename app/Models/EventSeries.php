@@ -2,23 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Interest extends Model
-{
 
-    protected $table = 'interests';
+class EventSeries extends Model
+{
+    use HasFactory;
+    protected $table = 'event_series';
     public $timestamps = true;
 
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
     protected $fillable = array('name');
-
-    public function persons()
-    {
-        return $this->belongsToMany('App\Models\Person');
-    }
 
 }

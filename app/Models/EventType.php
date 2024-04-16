@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Interest extends Model
+class EventType extends Model
 {
 
-    protected $table = 'interests';
+    protected $table = 'event_types';
     public $timestamps = true;
 
     use SoftDeletes;
@@ -16,9 +16,6 @@ class Interest extends Model
     protected $dates = ['deleted_at'];
     protected $fillable = array('name');
 
-    public function persons()
-    {
-        return $this->belongsToMany('App\Models\Person');
-    }
+   
 
 }
