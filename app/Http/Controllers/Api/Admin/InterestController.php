@@ -31,7 +31,7 @@ class InterestController extends Controller
     public function index(Request $request)
     {
         $items = $this->repository->paginate($request);
-        return $this->okApiResponse(InterestResource::collection($items),__('cities loaded'));
+        return $this->okApiResponse(InterestResource::collection($items),__('interests loaded'));
 
     }
   
@@ -45,7 +45,7 @@ class InterestController extends Controller
     {
         try {
             $item = $this->repository->store($request);
-            return $this->createdApiResponse(new InterestResource($item),__('cities loaded'));
+            return $this->createdApiResponse(new InterestResource($item),__('interests loaded'));
         } catch (QueryException  $e) {
             return $this->errorApiResponse($e->getMessage(), $e->getStatus());
 
@@ -79,7 +79,7 @@ class InterestController extends Controller
      {
          try {
             $item= $this->repository->show($id);
-            return $this->okApiResponse(new InterestResource($item),__('cities loaded'));
+            return $this->okApiResponse(new InterestResource($item),__('interests loaded'));
         } catch (QueryException $e) {
                 return $this->notFoundApiResponse('',$e->getMessage());
          }
