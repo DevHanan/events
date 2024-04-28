@@ -19,7 +19,9 @@ class CityResource extends JsonResource
             "name"=> $this->name,
             'initials' => $this->initials,
             'code' => $this->code,
-            'country' => new CountryResource($this->country)
+            'country' => new CountryResource($this->country),
+            'date' => $this->created_at
+
         ];
     }
 }
