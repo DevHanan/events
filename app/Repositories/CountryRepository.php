@@ -25,7 +25,6 @@ class CountryRepository extends AppRepository
         return [
             'name' => $request->input('name'),
             'code' => $request->input('code'),
-            'flag' => $request->input('flag'),
             'initials' => $request->input('initials'),
             'nationality' => $request->input('nationality')
 

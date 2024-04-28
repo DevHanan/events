@@ -46,6 +46,10 @@ class CountryController extends Controller
     {
         try {
             $item = $this->repository->store($request);
+            if($request->flag){
+              $item->flag =  $this->saveImage($request->flag,'countries');
+                $item->save();
+            }
             return $this->createdApiResponse(new CountryResource($item),__('Countries loaded'));
         } catch (QueryException  $e) {
             return $this->errorApiResponse($e->getMessage(), $e->getStatus());
