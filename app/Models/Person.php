@@ -16,10 +16,17 @@ class Person extends Model
 
 
     protected $dates = ['deleted_at'];
-    protected $fillable = array('first_name', 'last_name');
+    protected $fillable = array('first_name', 'last_name','surName','name_tag','ID','id_type','id_expiration','Honor',
+                              'email','birthdate','gender','zip','Phone1','WhatsApp','street_address','linkedIn','Job_title',
+                            'city_id','country_id','leader_Sn','account_number');
 
     public function country()
     {
         return $this->belongsTo('App\Models\Country');
+    }
+
+    public function city()
+    {
+        return $this->belongsTo('App\Models\City');
     }
 }
