@@ -31,7 +31,7 @@ class PersonController extends Controller
     public function index(Request $request)
     {
         $items = $this->repository->paginate($request);
-        return $this->okApiResponse(PersonResource::collection($items),__('Countries loaded'));
+        return $this->okApiResponse(PersonResource::collection($items),__('persons loaded'));
 
     }
   
@@ -45,7 +45,7 @@ class PersonController extends Controller
     {
         try {
             $item = $this->repository->store($request);
-            return $this->createdApiResponse(new PersonResource($item),__('Countries loaded'));
+            return $this->createdApiResponse(new PersonResource($item),__('persons loaded'));
         } catch (QueryException  $e) {
             return $this->errorApiResponse($e->getMessage(), $e->getStatus());
 
@@ -79,7 +79,7 @@ class PersonController extends Controller
      {
          try {
             $item= $this->repository->show($id);
-            return $this->okApiResponse(new PersonResource($item),__('Countries loaded'));
+            return $this->okApiResponse(new PersonResource($item),__('persons loaded'));
         } catch (QueryException $e) {
                 return $this->notFoundApiResponse('',$e->getMessage());
          }
