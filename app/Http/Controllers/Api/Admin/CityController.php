@@ -94,7 +94,7 @@ class CityController extends Controller
     {
         try {
             $this->repository->delete($id);
-            return response()->json([], 204);
+            return $this->okApiResponse('',__('city deleted'));
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getStatus());
         }

@@ -94,7 +94,7 @@ class InterestController extends Controller
     {
         try {
             $this->repository->delete($id);
-            return response()->json([], 204);
+            return $this->okApiResponse('',__('Interset deleted'));
         } catch (QueryException $e) {
             return $this->errorApiResponse($e->getMessage(), $e->getStatus());
         }

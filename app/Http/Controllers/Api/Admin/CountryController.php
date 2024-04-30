@@ -3,7 +3,6 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CountryRequest;
-use App\Http\Requests\Admin\UpdateCountryRequest;
 use App\Http\Resources\CountryResource;
 use App\Repositories\CountryRepository;
 use Illuminate\Database\QueryException;
@@ -99,7 +98,7 @@ class CountryController extends Controller
     {
         try {
             $this->repository->delete($id);
-            return response()->json([], 204);
+            return $this->okApiResponse('',__('country deleted'));
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getStatus());
         }

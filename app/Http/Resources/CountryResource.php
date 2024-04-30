@@ -22,8 +22,6 @@ class CountryResource extends JsonResource
             "nationality"=>$this->nationality ?? '',
             "initials"=>$this->initials ?? '',
             'date' => $this->created_at
-
-
         ];
     }
 }
