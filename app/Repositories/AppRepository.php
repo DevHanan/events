@@ -24,7 +24,7 @@ class AppRepository
      */
     public function get()
     {
-        return $this->model->get();
+        return $this->model->paginate()->get();
     }
     /**
      * get collection of items in paginate format.
