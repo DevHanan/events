@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Admin;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
+ use Illuminate\Http\Exceptions\HttpResponseException;
 class CountryRequest extends FormRequest
 {
     /**
@@ -23,7 +25,6 @@ class CountryRequest extends FormRequest
      */
     public function rules()
     {
-        $updateMethod = $this->route()->getAction('uses') === 'App\Http\Controllers\Admin\CountryController@update';
     
         return [
             'flag'           => 'required',
@@ -43,4 +44,13 @@ class CountryRequest extends FormRequest
             'code'                => __('code')
         ];
     }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+          'status' => '422',
+          'errors' => $validator->errors(),
+        ], 422));
+    }
+
 }
