@@ -48,6 +48,7 @@ class CountryRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
+          'message' => 'Vaildation errors',
           'status' => '422',
           'errors' => $validator->errors(),
         ], 422));

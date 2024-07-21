@@ -24,7 +24,7 @@ class PersonRepository extends AppRepository
     {
         return [
             'first_name' => $request->input('first_name'),
-            'last_name' => $request->input('last_name'),
+            'second_name' => $request->input('second_name'),
             'surName' => $request->input('surName') , 
             'name_tag' => $request->input('name_tag'),
             'ID'  => $request->input('ID'),

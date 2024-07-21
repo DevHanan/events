@@ -31,7 +31,15 @@ class InterestController extends Controller
     public function index(Request $request)
     {
         $items = $this->repository->paginate($request);
-        return $this->okApiResponse(InterestResource::collection($items),__('interests loaded'));
+        $data['rows'] = InterestResource::collection($items);
+        $data['meta'] = [
+            'current_page' => $data['rows']->currentPage(),
+            'last_page' => $data['rows']->lastPage(),
+            'per_page' => $data['rows']->perPage(),
+            'total' => $data['rows']->total(),
+            ];
+        
+        return $this->okApiResponse($data,__('interests loaded'));
 
     }
   

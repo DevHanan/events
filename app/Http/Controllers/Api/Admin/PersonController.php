@@ -31,7 +31,14 @@ class PersonController extends Controller
     public function index(Request $request)
     {
         $items = $this->repository->paginate($request);
-        return $this->okApiResponse(PersonResource::collection($items),__('persons loaded'));
+        $data['rows'] = PersonResource::collection($items);
+        $data['meta'] = [
+            'current_page' => $data['rows']->currentPage(),
+            'last_page' => $data['rows']->lastPage(),
+            'per_page' => $data['rows']->perPage(),
+            'total' => $data['rows']->total(),
+            ];
+        return $this->okApiResponse($data,__('persons loaded'));
 
     }
   
@@ -47,7 +54,7 @@ class PersonController extends Controller
             $item = $this->repository->store($request);
             return $this->createdApiResponse(new PersonResource($item),__('persons loaded'));
         } catch (QueryException  $e) {
-            return $this->errorApiResponse($e->getMessage(), $e->getStatus());
+            return response()->json(['message' => $e->getMessage(), 'status'=>'422']);
 
         }
     }
@@ -62,9 +69,9 @@ class PersonController extends Controller
     {
         try {
             $item = $this->repository->update($id, $request);
-            return response()->json(['item' => $item]);
+            return $this->createdApiResponse(new PersonResource($item),__('persons loaded'));
         } catch (QueryException $e) {
-           return response()->json(['message' => $e->getMessage()], $e->getStatus());
+            return response()->json(['message' => $e->getMessage(), 'status'=>'422']);
         }
     }
   
@@ -96,7 +103,7 @@ class PersonController extends Controller
             $this->repository->delete($id);
             return response()->json([], 204);
         } catch (QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], $e->getStatus());
+            return response()->json(['message' => $e->getMessage(), 'status'=>'422']);
         }
     }
 }

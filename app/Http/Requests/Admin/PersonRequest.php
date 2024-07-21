@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Admin;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class PersonRequest extends FormRequest
 {
@@ -26,8 +28,10 @@ class PersonRequest extends FormRequest
     
         return [
             'first_name'             => 'required|alpha_dash|min:3|max:24',
-            'last_name'             => 'required|alpha_dash|min:3|max:6',
+            'second_name'             => 'required|alpha_dash|min:3|max:6',
             'country_id' =>  'required|exists:countries,id',
+            'surName'=> 'required',
+            'email' =>  'required|unique:persons,email',
 
         ];
 
@@ -37,7 +41,16 @@ class PersonRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'              => __('name'),
+            'first_name'              => __('first_name'),
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+          'message' => 'Vaildation errors',
+          'status' => '422',
+          'errors' => $validator->errors(),
+        ], 422));
     }
 }

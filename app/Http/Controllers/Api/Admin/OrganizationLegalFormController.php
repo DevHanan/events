@@ -2,22 +2,22 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\CountryRequest;
-use App\Http\Resources\CountryResource;
-use App\Repositories\CountryRepository;
+use App\Http\Requests\Admin\OrganizationLegalFormRequest;
+use App\Http\Resources\OrganizationLegalFormResource;
+use App\Repositories\OrganizationLegalFormRepository;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponse;
 
 
-class CountryController extends Controller
+class OrganizationLegalFormController extends Controller
 {
   
     protected $repository;
     use ApiResponse;
 
   
-    public function __construct(CountryRepository $repository)
+    public function __construct(OrganizationLegalFormRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -31,32 +31,28 @@ class CountryController extends Controller
     public function index(Request $request)
     {
         $items = $this->repository->paginate($request);
-        $data['rows'] = CountryResource::collection($items);
+        $data['rows'] = OrganizationLegalFormResource::collection($items);
         $data['meta'] = [
             'current_page' => $data['rows']->currentPage(),
             'last_page' => $data['rows']->lastPage(),
             'per_page' => $data['rows']->perPage(),
             'total' => $data['rows']->total(),
             ];
-        return $this->okApiResponse($data,__('Countries loaded'));
+        return $this->okApiResponse($data,__('Legal Form loaded'));
 
     }
   
     /**
      * store post data to database table.
      *
-     * @param $request: App\Http\Requests\CountryRequest
+     * @param $request: App\Http\Requests\OrganizationLegalFormRequest
      * @return json response
      */
-    public function store(CountryRequest $request)
+    public function store(OrganizationLegalFormRequest $request)
     {
         try {
             $item = $this->repository->store($request);
-            // if($request->flag){
-            //   $item->flag =  $this->saveImage($request->flag,'countries');
-            //     $item->save();
-            // }
-            return $this->createdApiResponse(new CountryResource($item),__('Countries loaded'));
+            return $this->createdApiResponse(new OrganizationLegalFormResource($item),__('Legal Form loaded'));
         } catch (QueryException  $e) {
             return response()->json(['message' => $e->getMessage(), 'status'=>'422']);
 
@@ -66,14 +62,14 @@ class CountryController extends Controller
     /**
      * update post data to database table.
      *
-     * @param $request: App\Http\Requests\UpdateCountryRequest
+     * @param $request: App\Http\Requests\UpdateOrganizationLegalFormRequest
      * @return json response
      */
-    public function update($id, CountryRequest $request)
+    public function update($id, OrganizationLegalFormRequest $request)
     {
         try {
             $item = $this->repository->update($id, $request);
-            return $this->createdApiResponse(new CountryResource($item),__('cities updated'));
+            return $this->okApiResponse(new OrganizationLegalFormResource($item),__('Legal Form loaded'));
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage(), 'status'=>'422']);
         }
@@ -90,9 +86,9 @@ class CountryController extends Controller
      {
          try {
             $item= $this->repository->show($id);
-            return $this->okApiResponse(new CountryResource($item),__('Countries loaded'));
+            return $this->okApiResponse(new OrganizationLegalFormResource($item),__('Legal Form loaded'));
         } catch (QueryException $e) {
-            return response()->json(['message' => $e->getMessage(), 'status'=>'422']);
+                return $this->notFoundApiResponse('',$e->getMessage());
          }
      }
     /**
@@ -105,7 +101,7 @@ class CountryController extends Controller
     {
         try {
             $this->repository->delete($id);
-            return $this->okApiResponse('',__('country deleted'));
+            return $this->okApiResponse('',__('Legal Form deleted'));
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage(), 'status'=>'422']);
         }

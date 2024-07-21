@@ -2,22 +2,22 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\CountryRequest;
-use App\Http\Resources\CountryResource;
-use App\Repositories\CountryRepository;
+use App\Http\Requests\Admin\OrganizationRequest;
+use App\Http\Resources\OrganizationResource;
+use App\Repositories\OrganizationRepository;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponse;
 
 
-class CountryController extends Controller
+class OrganizationController extends Controller
 {
   
     protected $repository;
     use ApiResponse;
 
   
-    public function __construct(CountryRepository $repository)
+    public function __construct(OrganizationRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -31,32 +31,32 @@ class CountryController extends Controller
     public function index(Request $request)
     {
         $items = $this->repository->paginate($request);
-        $data['rows'] = CountryResource::collection($items);
+        $data['rows'] = OrganizationResource::collection($items);
         $data['meta'] = [
             'current_page' => $data['rows']->currentPage(),
             'last_page' => $data['rows']->lastPage(),
             'per_page' => $data['rows']->perPage(),
             'total' => $data['rows']->total(),
             ];
-        return $this->okApiResponse($data,__('Countries loaded'));
+        return $this->okApiResponse($data,__('Organization loaded'));
 
     }
   
     /**
      * store post data to database table.
      *
-     * @param $request: App\Http\Requests\CountryRequest
+     * @param $request: App\Http\Requests\OrganizationRequest
      * @return json response
      */
-    public function store(CountryRequest $request)
+    public function store(OrganizationRequest $request)
     {
         try {
             $item = $this->repository->store($request);
-            // if($request->flag){
-            //   $item->flag =  $this->saveImage($request->flag,'countries');
-            //     $item->save();
-            // }
-            return $this->createdApiResponse(new CountryResource($item),__('Countries loaded'));
+            if($request->flag){
+              $item->flag =  $this->saveImage($request->flag,'countries');
+                $item->save();
+            }
+            return $this->createdApiResponse(new OrganizationResource($item),__('Countries loaded'));
         } catch (QueryException  $e) {
             return response()->json(['message' => $e->getMessage(), 'status'=>'422']);
 
@@ -66,14 +66,14 @@ class CountryController extends Controller
     /**
      * update post data to database table.
      *
-     * @param $request: App\Http\Requests\UpdateCountryRequest
+     * @param $request: App\Http\Requests\UpdateOrganizationRequest
      * @return json response
      */
-    public function update($id, CountryRequest $request)
+    public function update($id, OrganizationRequest $request)
     {
         try {
             $item = $this->repository->update($id, $request);
-            return $this->createdApiResponse(new CountryResource($item),__('cities updated'));
+            return $this->createdApiResponse(new OrganizationResource($item),__('Countries loaded'));
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage(), 'status'=>'422']);
         }
@@ -90,9 +90,9 @@ class CountryController extends Controller
      {
          try {
             $item= $this->repository->show($id);
-            return $this->okApiResponse(new CountryResource($item),__('Countries loaded'));
+            return $this->okApiResponse(new OrganizationResource($item),__('Countries loaded'));
         } catch (QueryException $e) {
-            return response()->json(['message' => $e->getMessage(), 'status'=>'422']);
+                return $this->notFoundApiResponse('',$e->getMessage());
          }
      }
     /**
@@ -105,7 +105,7 @@ class CountryController extends Controller
     {
         try {
             $this->repository->delete($id);
-            return $this->okApiResponse('',__('country deleted'));
+            return $this->okApiResponse('',__('Organization deleted'));
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage(), 'status'=>'422']);
         }

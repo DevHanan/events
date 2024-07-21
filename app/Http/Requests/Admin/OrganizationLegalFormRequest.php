@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Requests\Admin;
+
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class CityRequest extends FormRequest
+class OrganizationLegalFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,31 +26,30 @@ class CityRequest extends FormRequest
      */
     public function rules()
     {
-    
+
         return [
-            'initials'           => 'required',
-            'name'             => 'required|alpha_dash|min:3|max:24',
-            'code'             => 'required|alpha_dash|min:3|max:6',
-            'country_id' =>  'required|exists:countries,id',
+            'legal_form_code'           => 'required',
+            'legal_form_abv'             => 'required',
+            'legal_form_spc' => 'required',
+            'legal_form_sn'             => 'required',
         ];
-
-
     }
 
     public function attributes()
     {
         return [
-            'name'              => __('name'),
-            'code'                => __('code')
+            'legal_form_code'              => __('legal_form_code'),
+            'legal_form_abv'                => __('legal_form_abv'),
+            'legal_form_sn'  => __('legal_form_sn')
         ];
     }
 
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
-          'message' => 'Vaildation errors',
-          'status' => '422',
-          'errors' => $validator->errors(),
+            'message' => 'Vaildation errors',
+            'status' => '422',
+            'errors' => $validator->errors(),
         ], 422));
     }
 }

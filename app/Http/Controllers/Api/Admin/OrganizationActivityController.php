@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use App\Traits\ApiResponse;
 
 
-class CountryController extends Controller
+class OrganizationActivityController extends Controller
 {
   
     protected $repository;
@@ -38,7 +38,7 @@ class CountryController extends Controller
             'per_page' => $data['rows']->perPage(),
             'total' => $data['rows']->total(),
             ];
-        return $this->okApiResponse($data,__('Countries loaded'));
+        return $this->okApiResponse($data,__('Activity loaded'));
 
     }
   
@@ -52,13 +52,13 @@ class CountryController extends Controller
     {
         try {
             $item = $this->repository->store($request);
-            // if($request->flag){
-            //   $item->flag =  $this->saveImage($request->flag,'countries');
-            //     $item->save();
-            // }
-            return $this->createdApiResponse(new CountryResource($item),__('Countries loaded'));
+            if($request->flag){
+              $item->flag =  $this->saveImage($request->flag,'Activity');
+                $item->save();
+            }
+            return $this->createdApiResponse(new CountryResource($item),__('Activity loaded'));
         } catch (QueryException  $e) {
-            return response()->json(['message' => $e->getMessage(), 'status'=>'422']);
+            return $this->errorApiResponse($e->getMessage(), $e->getStatus());
 
         }
     }
@@ -73,9 +73,9 @@ class CountryController extends Controller
     {
         try {
             $item = $this->repository->update($id, $request);
-            return $this->createdApiResponse(new CountryResource($item),__('cities updated'));
+            return response()->json(['item' => $item]);
         } catch (QueryException $e) {
-            return response()->json(['message' => $e->getMessage(), 'status'=>'422']);
+           return response()->json(['message' => $e->getMessage()], $e->getStatus());
         }
     }
   
@@ -90,9 +90,9 @@ class CountryController extends Controller
      {
          try {
             $item= $this->repository->show($id);
-            return $this->okApiResponse(new CountryResource($item),__('Countries loaded'));
+            return $this->okApiResponse(new CountryResource($item),__('Activity loaded'));
         } catch (QueryException $e) {
-            return response()->json(['message' => $e->getMessage(), 'status'=>'422']);
+                return $this->notFoundApiResponse('',$e->getMessage());
          }
      }
     /**
@@ -107,7 +107,7 @@ class CountryController extends Controller
             $this->repository->delete($id);
             return $this->okApiResponse('',__('country deleted'));
         } catch (QueryException $e) {
-            return response()->json(['message' => $e->getMessage(), 'status'=>'422']);
+            return response()->json(['message' => $e->getMessage()], $e->getStatus());
         }
     }
 }

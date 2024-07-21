@@ -31,7 +31,14 @@ class CityController extends Controller
     public function index(Request $request)
     {
         $items = $this->repository->paginate($request);
-        return $this->okApiResponse(CityResource::collection($items),__('cities loaded'));
+        $data['rows'] = CityResource::collection($items);
+        $data['meta'] = [
+            'current_page' => $data['rows']->currentPage(),
+            'last_page' => $data['rows']->lastPage(),
+            'per_page' => $data['rows']->perPage(),
+            'total' => $data['rows']->total(),
+            ];
+        return $this->okApiResponse($data,__('cities loaded'));
 
     }
   
@@ -47,7 +54,7 @@ class CityController extends Controller
             $item = $this->repository->store($request);
             return $this->createdApiResponse(new CityResource($item),__('cities loaded'));
         } catch (QueryException  $e) {
-            return $this->errorApiResponse($e->getMessage(), $e->getStatus());
+            return response()->json(['message' => $e->getMessage(), 'status'=>'422']);
 
         }
     }
@@ -62,9 +69,10 @@ class CityController extends Controller
     {
         try {
             $item = $this->repository->update($id, $request);
-            return response()->json(['item' => $item]);
+            return $this->createdApiResponse(new CityResource($item),__('cities updated'));
         } catch (QueryException $e) {
-           return response()->json(['message' => $e->getMessage()], $e->getStatus());
+            return response()->json(['message' => $e->getMessage(), 'status'=>'422']);
+
         }
     }
   
@@ -81,7 +89,7 @@ class CityController extends Controller
             $item= $this->repository->show($id);
             return $this->okApiResponse(new CityResource($item),__('cities loaded'));
         } catch (QueryException $e) {
-                return $this->notFoundApiResponse('',$e->getMessage());
+            return response()->json(['message' => $e->getMessage(), 'status'=>'422']);
          }
      }
     /**
@@ -96,7 +104,7 @@ class CityController extends Controller
             $this->repository->delete($id);
             return $this->okApiResponse('',__('city deleted'));
         } catch (QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], $e->getStatus());
+            return response()->json(['message' => $e->getMessage(), 'status'=>'422']);
         }
     }
 }

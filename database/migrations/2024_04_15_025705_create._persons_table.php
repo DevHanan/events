@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('second_name');
             $table->string('surName');
             $table->string('name_tag');
-            $table->string('ID');
+            $table->string('card_id');
             $table->string('id_type');
             $table->string('id_expiration');
             $table->string('Honor');

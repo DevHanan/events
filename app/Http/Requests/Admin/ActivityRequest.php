@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class CityRequest extends FormRequest
+class ActivityRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,10 +27,7 @@ class CityRequest extends FormRequest
     {
     
         return [
-            'initials'           => 'required',
-            'name'             => 'required|alpha_dash|min:3|max:24',
-            'code'             => 'required|alpha_dash|min:3|max:6',
-            'country_id' =>  'required|exists:countries,id',
+            'specifications'             => 'required|alpha_dash|min:3'
         ];
 
 
@@ -39,9 +36,8 @@ class CityRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'              => __('name'),
-            'code'                => __('code')
-        ];
+            'specifications'              => __('specifications')
+                ];
     }
 
     protected function failedValidation(Validator $validator)

@@ -20,7 +20,7 @@ class PersonResource extends JsonResource
             "nationality"=>$this->country->nationality ?? '',
             'surName' => $this->surName, 
             'name_tag' => $this->name_tag,
-            'ID'  => $this->ID,
+            'card_id'  => $this->card_id,
             'id_type'=>  $this->id_type,
             'id_expiration' => $this->id_expiration,
             'Honor' => $this->Honor,
